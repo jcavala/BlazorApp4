@@ -1,0 +1,98 @@
+﻿@page "/Discounts/edit"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>Discount</h4>
+<hr />
+@if (Discount is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Discount" OnValidSubmit="UpdateDiscount" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="Discount.DiscountId" value="@Discount.DiscountId" />
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount:</label>
+                    <InputNumber id="amount" @bind-Value="Discount.Amount" class="form-control" />
+                    <ValidationMessage For="() => Discount.Amount" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="startdate" class="form-label">StartDate:</label>
+                    <InputDate id="startdate" @bind-Value="Discount.StartDate" class="form-control" />
+                    <ValidationMessage For="() => Discount.StartDate" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="enddate" class="form-label">EndDate:</label>
+                    <InputDate id="enddate" @bind-Value="Discount.EndDate" class="form-control" />
+                    <ValidationMessage For="() => Discount.EndDate" class="text-danger" />
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/discounts">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int DiscountId { get; set; }
+
+    [SupplyParameterFromForm]
+    public Discount? Discount { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Discount ??= await DB.Discounts.FirstOrDefaultAsync(m => m.DiscountId == DiscountId);
+
+        if (Discount is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateDiscount()
+    {
+        DB.Attach(Discount!).State = EntityState.Modified;
+
+        try
+        {
+            
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!DiscountExists(Discount!.DiscountId))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/discounts");
+    }
+
+    bool DiscountExists(int discountid)
+    {
+        return DB.Discounts.Any(e => e.DiscountId == discountid);
+    }
+}

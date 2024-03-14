@@ -1,0 +1,91 @@
+﻿@page "/Stores/edit"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+@rendermode InteractiveServer
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>Store</h4>
+<hr />
+@if (Store is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Store" OnValidSubmit="UpdateStore" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="Store.StoreId" value="@Store.StoreId" />
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <InputText id="name" @bind-Value="Store.Name" class="form-control" />
+                    <ValidationMessage For="() => Store.Name" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location:</label>
+                    <InputText id="location" @bind-Value="Store.Location" class="form-control" />
+                    <ValidationMessage For="() => Store.Location" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/stores">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int StoreId { get; set; }
+
+    [SupplyParameterFromForm]
+    public Store? Store { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Store ??= await DB.Stores.FirstOrDefaultAsync(m => m.StoreId == StoreId);
+
+        if (Store is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateStore()
+    {
+        DB.Attach(Store!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!StoreExists(Store!.StoreId))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/stores");
+    }
+
+    bool StoreExists(int storeid)
+    {
+        return DB.Stores.Any(e => e.StoreId == storeid);
+    }
+}

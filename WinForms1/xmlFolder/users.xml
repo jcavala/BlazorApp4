@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<ArrayOfUserSettings>
+  <UserSettings>
+    <name>user2@gm.com</name>
+    <language>en</language>
+    <location>Zagreb</location>
+    <active>true</active>
+  </UserSettings>
+  <UserSettings>
+    <name>user1@gm.com</name>
+    <language>hr</language>
+    <location>Zagreb</location>
+    <active>false</active>
+  </UserSettings>
+</ArrayOfUserSettings>

@@ -1,0 +1,47 @@
+﻿@page "/stores/details"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>Store</h4>
+    <hr />
+    @if (store is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@store.Name</dd>
+            <dt class="col-sm-2">Location</dt>
+            <dd class="col-sm-10">@store.Location</dd>
+        </dl>
+        <div>
+            <a href="@($"/stores/edit?storeid={store.StoreId}")">Edit</a> |
+            <a href="@($"/stores")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    Store? store;
+
+    [SupplyParameterFromQuery]
+    public int StoreId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        store = await DB.Stores.FirstOrDefaultAsync(m => m.StoreId == StoreId);
+
+        if (store is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

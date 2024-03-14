@@ -1,0 +1,15 @@
+﻿
+
+# GET https://localhost:7178/getDocuments
+# Authorization: Bearer CfDJ8PW6ku42fDRElwyw77T3p3CgNwk0Ki1LGaTiHssvIDQaN3iY521REFxr-Hin71fe7EKxmkMEJkpjcDOEyvy82Dr48Sj59yx8rlEM6SEEY41WPvwH5PS24uYgfbDuuzhObCHmXfC-__GI5AsaGdPh_p5TlgtGU3MOXqigZ3pb4fI4Z-jTLMDogIfb5ZyTqtFStlV2f9d_NHdarQGCT5Q-CBHKNuhSFQmBbpbAONCKuwvKfdMbWw9oDAX3zZcXAGrmakJmATsw68tPk4AfyqeePdlhggeaKoE0puQ55bh2MtJg8RM3aAW3rED3hBqI6lPqwfTuq4yLzVKzmImzNqK3QruvyZ3aXJF2AvHULo3DkVaEXi7ZhBNF1zahCmpEHJXgmls1nA096IgN3uOZf3-KCB1QYDbAKn6ybpqCeBC7DNhCqD5WrmPC2t0fbUfHU_LKrrdYBXa1dTdH_o5b_rsLTI5oCVj_58maTMjiSKnZZNgAWlFnwwbsfTWi7IBmsXwV4C1Mxk3Hpx7dev7QMsRBfdWF8SORd0WUD0fJBxFMgPTACpWR23nU2eR_ZU5BTBryNhZIGphS39Ae-jql8VC6VKcZNEklu7jjmgh-4AZZbFYn26vfeHVDrqp_BMkoPvjhBqhq-9PaTqtbxVbSVbJsSspg9LDZ7zrzHBQ0dO2XU2As6uwwkHkazsSLdM3eISwfWQ
+
+# GET https://localhost:7178/generateDocument?FileName=document4&Date=1%2F23%2F2024&Location=Zagreb&StoreId=4
+
+
+POST https://localhost:7178/api/auth/login
+Content-Type: application/json
+
+{
+  "email":"user2@gm.com",
+  "password":"User2\""
+}

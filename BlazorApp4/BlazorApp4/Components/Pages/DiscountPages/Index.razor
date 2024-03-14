@@ -1,0 +1,26 @@
+﻿@page "/discounts"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="discounts/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.Discounts">
+    <PropertyColumn Property="discount => discount.DiscountId" />
+    <PropertyColumn Property="discount => discount.Amount" />
+    <PropertyColumn Property="discount => discount.StartDate" />
+    <PropertyColumn Property="discount => discount.EndDate" />
+    
+
+    <TemplateColumn Context="discount">
+        <a href="@($"discounts/edit?discountid={discount.DiscountId}")">Edit</a> |
+        <a href="@($"discounts/details?discountid={discount.DiscountId}")">Details</a> |
+        <a href="@($"discounts/delete?discountid={discount.DiscountId}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

@@ -1,0 +1,51 @@
+﻿@page "/discounts/details"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>Discount</h4>
+    <hr />
+    @if (discount is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Amount</dt>
+            <dd class="col-sm-10">@discount.Amount</dd>
+            <dt class="col-sm-2">StartDate</dt>
+            <dd class="col-sm-10">@discount.StartDate</dd>
+            <dt class="col-sm-2">EndDate</dt>
+            <dd class="col-sm-10">@discount.EndDate</dd>
+            <dt class="col-sm-2">ProductId</dt>
+            
+        </dl>
+        <div>
+            <a href="@($"/discounts/edit?discountid={discount.DiscountId}")">Edit</a> |
+            <a href="@($"/discounts")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    Discount? discount;
+
+    [SupplyParameterFromQuery]
+    public int DiscountId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        discount = await DB.Discounts.FirstOrDefaultAsync(m => m.DiscountId == DiscountId);
+
+        if (discount is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

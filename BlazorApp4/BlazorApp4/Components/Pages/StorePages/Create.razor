@@ -1,0 +1,48 @@
+﻿@page "/stores/create"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Store</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="store" OnValidSubmit="AddStore" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label> 
+                <InputText id="name" @bind-Value="store.Name" class="form-control" /> 
+                <ValidationMessage For="() => store.Name" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="location" class="form-label">Location:</label> 
+                <InputText id="location" @bind-Value="store.Location" class="form-control" /> 
+                <ValidationMessage For="() => store.Location" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/stores">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Store store { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddStore()
+    {
+        DB.Stores.Add(store);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/stores");
+    }
+}

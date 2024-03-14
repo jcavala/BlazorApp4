@@ -1,0 +1,25 @@
+﻿@page "/stores"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="stores/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.Stores">
+    <PropertyColumn Property="store => store.StoreId" />
+    <PropertyColumn Property="store => store.Name" />
+    <PropertyColumn Property="store => store.Location" />
+
+    <TemplateColumn Context="store">
+        <a href="@($"stores/edit?storeid={store.StoreId}")">Edit</a> |
+        <a href="@($"stores/details?storeid={store.StoreId}")">Details</a> |
+        <a href="@($"stores/delete?storeid={store.StoreId}")">Delete</a> |
+        <a href="@($"addremoveproducts/{store.StoreId}")">Products</a>
+    </TemplateColumn>
+</QuickGrid>

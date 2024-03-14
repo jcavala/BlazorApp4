@@ -1,0 +1,53 @@
+﻿@page "/addremoveproducts/{storeId:int}"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@rendermode InteractiveServer
+<h3>Add/Remove Products</h3>
+
+<p>Store Name: @store.Name</p>
+
+<div>
+    <h5>Products</h5>
+    <ul>
+        @foreach (var product in store.Products)
+        {
+            <li>@product.Name <button @onclick="() => RemoveProduct(product)">Remove</button></li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h5>Add Product</h5>
+    <input @bind="newProductName" />
+    <button @onclick="AddProduct">Add</button>
+</div>
+
+@code {
+    [Parameter]
+    public int StoreId { get; set; }
+
+    private Store store;
+    private string newProductName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        store =  DB.Stores.First(s => s.StoreId == StoreId);
+    }
+
+    private async Task AddProduct()
+    {
+        if (!string.IsNullOrEmpty(newProductName))
+        {
+            var newProduct = DB.Products.Where(p => p.Name == newProductName).First();
+            store.Products.Add(newProduct);
+            await DB.SaveChangesAsync();
+            newProductName = "";
+        }
+    }
+
+    private async Task RemoveProduct(Product product)
+    {
+        store.Products.Remove(product);
+        await DB.SaveChangesAsync();
+    }
+}

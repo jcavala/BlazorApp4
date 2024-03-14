@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<body>
+
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<canvas id="secondChart" style="width:100%;max-width:600px"></canvas>
+
+<canvas id="thirdChart" style="width:100%;max-width:600px"></canvas>
+
+<script>
+var chartData = {"counts":[4,9],"sums":[2119.5000,2200.3020],"maxPrices":[891.0000,5.8500],"avgPrices":[200.8750,20.4780],"categories":["electronics","food"]};
+var barColors = "red";
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: chartData.categories,
+    datasets: [{
+      backgroundColor: barColors,
+      data: chartData.counts
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Brojnost proizvoda po kategoriji"
+    },
+ 
+ scales: {
+  yAxes: [{
+   display: true,
+ ticks: {
+    beginAtZero: true  
+  }
+   }]
+ } }
+});
+
+new Chart("secondChart", {
+  type: "bar",
+  data: {
+    labels: chartData.categories,
+    datasets: [{
+      backgroundColor: barColors,
+      data: chartData.avgPrices
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Prosječna cijena proizvoda po kategoriji"
+    },
+ 
+ scales: {
+  yAxes: [{
+   display: true,
+ ticks: {
+    beginAtZero: true  
+  }
+   }]
+ } }
+});
+
+new Chart("thirdChart", {
+  type: "bar",
+  data: {
+    labels: chartData.categories,
+    datasets: [{
+      backgroundColor: barColors,
+      data: chartData.sums
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Ukupna vrijednost proizvoda po kategoriji"
+    },
+ 
+ scales: {
+  yAxes: [{
+   display: true,
+ ticks: {
+    beginAtZero: true  
+  }
+   }]
+ } }
+});
+
+</script>
+
+</body>
+</html>

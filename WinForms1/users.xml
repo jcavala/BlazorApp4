@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<users>
+  <user>
+    <id>1</id>
+    <name>user1@gm.com</name>
+    <language>en</language>
+    <location>Zagreb</location>
+    <active>true</active>
+  </user>
+  <user>
+    <id>2</id>
+    <name>user2@gm.com</name>
+    <language>hr</language>
+    <location>Zagreb</location>
+    <active>false</active>
+  </user>
+</users>

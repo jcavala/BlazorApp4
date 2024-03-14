@@ -1,0 +1,58 @@
+﻿@page "/discounts/create"
+@inject BlazorApp4.Data.ApplicationDbContext DB
+@using BlazorApp4.Data
+@using Microsoft.EntityFrameworkCore
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Discount</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="discount" OnValidSubmit="AddDiscount" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount:</label> 
+                <InputNumber id="amount" @bind-Value="discount.Amount" class="form-control" /> 
+                <ValidationMessage For="() => discount.Amount" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="startdate" class="form-label">StartDate:</label> 
+                <InputDate id="startdate" @bind-Value="discount.StartDate" class="form-control" /> 
+                <ValidationMessage For="() => discount.StartDate" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="enddate" class="form-label">EndDate:</label> 
+                <InputDate id="enddate" @bind-Value="discount.EndDate" class="form-control" /> 
+                <ValidationMessage For="() => discount.EndDate" class="text-danger" /> 
+            </div>        
+                   
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/discounts">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Discount discount { get; set; } = new();
+
+    @inject IServiceScopeFactory scope;
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddDiscount()
+    {
+        using var context = scope.CreateScope().ServiceProvider.GetService<ApplicationDbContext>();
+        DB.Discounts.Add(discount);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/discounts");
+    }
+}
